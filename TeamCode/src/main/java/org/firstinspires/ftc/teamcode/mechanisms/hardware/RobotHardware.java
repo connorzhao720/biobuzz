@@ -191,7 +191,10 @@ public class RobotHardware {
         double ticksPerRev = motorshoot.getMotorType().getTicksPerRev();
         return ticksPerSec * 60.0 / ticksPerRev;
     }
-
+    public void stopIntake(){
+        motorintake.setPower(0);
+        motorsecondintake.setPower(0);
+    }
     public void stopShooter() {
         if (motorshoot == null) return;
        motorshoot.setPower(0.0);

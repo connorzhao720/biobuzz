@@ -52,6 +52,9 @@ public class OpMode3 extends LinearOpMode {
                 robot.spinOutBothIntakes();
             }
 
+            if(gamepad1.right_bumper){
+                robot.stopIntake();
+            }
             //set 0
             if(gamepad1.y){
                 robot.shoot_y();
@@ -67,11 +70,11 @@ public class OpMode3 extends LinearOpMode {
 
             double x_dir = -gamepad1.left_stick_y * 1.3 * controller1Speed;
             double y_dir = gamepad1.left_stick_x * 1.3 * controller1Speed;
-            double turn = -gamepad1.right_stick_x * 1.3 * controller1Speed;
+            double turn = gamepad1.right_stick_x * 1.3 * controller1Speed;
 
             double flPower = x_dir + y_dir + turn;
-            double blPower = y_dir - x_dir + turn;
-            double frPower = y_dir - x_dir - turn;
+            double blPower = y_dir - x_dir - turn;//+turn
+            double frPower = y_dir - x_dir + turn;// -turn
             double brPower = y_dir + x_dir - turn;
 
 
