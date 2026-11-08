@@ -68,6 +68,15 @@ public class RobotHardware {
 
         // get shooter as DcMotorEx to expose velocity control
         motorshoot = hwMap.get(DcMotorEx.class, "shooter");
+        double kp=104.92;
+        double ki = 0.18;
+        double kd = 80.29;
+        double kf = 11.5;
+
+        motorshoot.setPIDFCoefficients(
+                DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(kp,ki,kd,kf)
+        );
 
         //limelight = hwMap.get(Limelight3A.class, "limelight");
 
@@ -82,6 +91,7 @@ public class RobotHardware {
 
 //        motorintake.setDirection(DcMotor.Direction.REVERSE);
 //        motorsweep.setDirection(DcMotor.Direction.REVERSE);
+
 
 
 
@@ -163,15 +173,15 @@ public class RobotHardware {
 
     public void spinBothIntakes(){
         motorintake.setPower(0.7);
-        motorsecondintake.setPower(0.7);
+        motorsecondintake.setPower(-0.7);
     }
     public void spinSecondOnly(){
         motorintake.setPower(0.0);
-        motorsecondintake.setPower(0.7);
+        motorsecondintake.setPower(-0.7);
     }
     public void spinOutBothIntakes(){
         motorintake.setPower(-0.7);
-        motorsecondintake.setPower(-0.7);
+        motorsecondintake.setPower(0.7);
     }
     public void setAllDrivePower(double p){ setDrivePower(p,p,p,p);}
 
@@ -199,14 +209,15 @@ public class RobotHardware {
         if (motorshoot == null) return;
        motorshoot.setPower(0.0);
        motorshoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       servoblocker.setPosition(0.75);
     }
     public void shoot_b(){
-        motorshoot.setVelocity(1100);
+        motorshoot.setVelocity(1050);
     }
     public void shoot_y(){
-        if(motorshoot.getVelocity() >= 1100){
+        if(motorshoot.getVelocity() >= 1050){
             servoblocker.setPosition(1.0);
-        }else if(motorshoot.getVelocity() < 1100){
+        }else if(motorshoot.getVelocity() < 1050){
             servoblocker.setPosition(0.75);
         }
     }
