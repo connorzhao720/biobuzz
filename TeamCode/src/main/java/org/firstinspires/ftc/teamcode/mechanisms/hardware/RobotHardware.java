@@ -40,17 +40,20 @@ public class RobotHardware {
     public DcMotor motorbr = null;
     public DcMotor motorbl = null;
     public DcMotor motorintake = null;
-    public DcMotor motorsweep = null;
     //public Limelight3A limelight;
 
     // Use DcMotorEx for shooter so we can control velocity (ticks/sec)
     public DcMotorEx motorshoot = null;
+    public DcMotorEx motorturret = null;
     public DcMotor motorsecondintake = null;
     public Servo servoblocker = null;
     // Initial robot orientation
     public YawPitchRollAngles orientation0;
     public AngularVelocity angularVelocity0;
     public double yaw0;
+    public double rpm = 1050;
+    public double servoOpen = 0.75;
+    public double servoClose = 1.0;
 
     public RobotHardware() {}
     public void init(HardwareMap ahwMap)    {
@@ -63,6 +66,7 @@ public class RobotHardware {
 
         motorintake = hwMap.get(DcMotor.class, "firstintake");
         motorsecondintake = hwMap.get(DcMotor.class, "secondintake");
+
         servoblocker = hwMap.get(Servo.class, "blocker");
 //        motorsweep = hwMap.get(DcMotor.class, "sweep");
 
@@ -70,7 +74,7 @@ public class RobotHardware {
         motorshoot = hwMap.get(DcMotorEx.class, "shooter");
         double kp=104.92;
         double ki = 0.18;
-        double kd = 80.29;
+        double kd = 2.29;
         double kf = 11.5;
 
         motorshoot.setPIDFCoefficients(
@@ -95,11 +99,10 @@ public class RobotHardware {
 
 
 
-
-
         setDrivetrainMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         motorshoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorshoot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorshoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorshoot.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -175,9 +178,9 @@ public class RobotHardware {
         motorintake.setPower(0.7);
         motorsecondintake.setPower(-0.7);
     }
-    public void spinSecondOnly(){
-        motorintake.setPower(0.0);
-        motorsecondintake.setPower(-0.7);
+    public void spinFirstOnly(){
+        motorsecondintake.setPower(0.0);
+        motorintake.setPower(0.7);
     }
     public void spinOutBothIntakes(){
         motorintake.setPower(-0.7);
@@ -209,261 +212,20 @@ public class RobotHardware {
         if (motorshoot == null) return;
        motorshoot.setPower(0.0);
        motorshoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       servoblocker.setPosition(0.75);
+       servoblocker.setPosition(servoClose);
     }
     public void shoot_b(){
-        motorshoot.setVelocity(1050);
+        motorshoot.setVelocity(rpm + 300);
     }
     public void shoot_y(){
-        if(motorshoot.getVelocity() >= 1050){
-            servoblocker.setPosition(1.0);
-        }else if(motorshoot.getVelocity() < 1050){
-            servoblocker.setPosition(0.75);
+        if(motorshoot.getVelocity() >= rpm){
+            servoblocker.setPosition(servoOpen);
+        }else if(motorshoot.getVelocity() < rpm){
+            servoblocker.setPosition(servoClose);
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void shoot_x(){
-        motorshoot.setVelocity(0);
-        servoblocker.setPosition(0.0);
-    }
 //    public void autoShootShort(){
 //        if(motorshoot.getVelocity() > 1430){
 ////            motorintake.setPower(-1.0);

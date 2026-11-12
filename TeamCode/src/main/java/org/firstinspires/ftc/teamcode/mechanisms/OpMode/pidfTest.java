@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.mechanisms.OpMode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.mechanisms.hardware.RobotHardware;
 
@@ -22,12 +24,13 @@ public class pidfTest extends LinearOpMode {
 
     private double controller1Speed = 1;
 
-    private double kp = 0;
+    double rpm = 1000.0;
+    private double kp = 1;
     private double ki = 0;
     private double kd = 0;
-    private double kf = 11.5;
-    int current = 0;
-    int change = 1;
+
+    int selectedState = 0;
+    double pidStep = 0.0;
 
 
     @Override
@@ -42,94 +45,91 @@ public class pidfTest extends LinearOpMode {
             boolean x = gamepad1.x;
 
 
-
-            if (gamepad1.left_bumper){
+            if (gamepad1.left_bumper) {
                 robot.spinBothIntakes();
             }
 
-            if (gamepad1.left_trigger >= 0.7){
-                robot.spinSecondOnly();
+            if (gamepad1.left_trigger >= 0.7) {
+                robot.spinFirstOnly();
             }
 
-            if(gamepad1.right_trigger >= 0.7){
+            if (gamepad1.right_trigger >= 0.7) {
                 robot.spinOutBothIntakes();
             }
 
-            if(gamepad1.right_bumper){
+            if (gamepad1.right_bumper) {
                 robot.stopIntake();
             }
             //set 0
-            if(gamepad1.y){
+            if (gamepad1.y) {
                 robot.shoot_y();
             }
 
-            if(gamepad1.b){
+            if (gamepad1.b) {
                 robot.shoot_b();
             }
 
-            if(gamepad1.x){
-                robot.shoot_x();
+            if (gamepad1.x) {
+                robot.stopShooter();
             }
 
-            if(gamepad2.a){
-                if(current == 0){
-                    kp = kp + (1 * change);
+
+            if (gamepad2.dpad_up && selectedState >= 2) {
+                selectedState = 0;
+                sleep(500);
+            } else if (gamepad2.dpad_up) {
+                selectedState++;
+                sleep(500);
+            } else if (gamepad2.dpad_down && selectedState <= 0) {
+                selectedState = 2;
+                sleep(500);
+            } else if (gamepad2.dpad_down) {
+                selectedState--;
+                sleep(500);
+            }
+
+            if (gamepad2.dpad_left) {
+                if (selectedState == 0) {
+                    kp -= pidStep;
+                    sleep(500);
+                } else if (selectedState == 1) {
+                    ki -= pidStep;
+                    sleep(500);
+                } else if (selectedState == 2) {
+                    kd -= pidStep;
+                    sleep(500);
                 }
-                if(current == 1){
-                    ki = ki + (1 * change);
-                }
-                if(current == 2){
-                    kd = kd + (1 * change);
+            } else if (gamepad2.dpad_right) {
+                if (selectedState == 0) {
+                    kp += pidStep;
+                    sleep(500);
+                } else if (selectedState == 1) {
+                    ki += pidStep;
+                    sleep(500);
+                } else if (selectedState == 2) {
+                    kd += pidStep;
+                    sleep(500);
                 }
             }
 
-            if(gamepad2.b){
-                if(current == 0){
-                    kp = kp + (10 * change);
-                }
-                if(current == 1){
-                    ki = ki + (10 * change);
-                }
-                if(current == 2){
-                    kd = kd + (10 * change);
-                }
-            }
 
-            if(gamepad2.x){
-                if(current == 0){
-                    kp = kp + (0.1 * change);
-                }
-                if(current == 1){
-                    ki = ki + (0.1 * change);
-                }
-                if(current == 2){
-                    kd = kd + (0.1 * change);
-                }
-            }
+            if (gamepad2.x) pidStep = 0.1;
+            else if (gamepad2.a) pidStep = 1.0;
+            else if (gamepad2.b) pidStep = 10.0;
+            else if (gamepad2.y) pidStep = 100.0;
 
-            if(gamepad2.y){
-                change = -change;
-
-
-            if(gamepad2.dpad_up){
-                current = 0;
-            }
-            if(gamepad2.dpad_right){
-                current = 1;
-            }
-
-            if(gamepad2.dpad_down){
-                current = 2;
-            }
+            robot.motorshoot.setPIDFCoefficients(
+                    DcMotor.RunMode.RUN_USING_ENCODER,
+                    new PIDFCoefficients(kp, ki, kd, 11.5)
+            );
 
             telemetry.addData("shooter velocity", robot.motorshoot != null ? robot.motorshoot.getVelocity() : "null");
             telemetry.addData("shooter tpr", robot.motorshoot != null && robot.motorshoot.getMotorType() != null ? robot.motorshoot.getMotorType().getTicksPerRev() : "null");
             telemetry.addData("kp", kp);
             telemetry.addData("ki", ki);
             telemetry.addData("kd", kd);
-            telemetry.addData("kf", kf);
-            telemetry.addData("change", change);
-            telemetry.addData("current", current);
+            telemetry.addData("pidStep: ", pidStep);
+            telemetry.addData("selectedState: ", selectedState);
             telemetry.update();
 
             double x_dir = -gamepad1.left_stick_y * 1.3 * controller1Speed;
@@ -145,8 +145,7 @@ public class pidfTest extends LinearOpMode {
             if (gamepad1.dpad_down) {
                 controller1Speed = 0.3;
                 robot.setDrivePower(-flPower, -frPower, -blPower, -brPower);
-            }
-            else {
+            } else {
                 controller1Speed = 1;
                 robot.setDrivePower(-flPower, -frPower, -blPower, -brPower);
             }
@@ -162,4 +161,4 @@ public class pidfTest extends LinearOpMode {
 
     }
 
-}}
+}

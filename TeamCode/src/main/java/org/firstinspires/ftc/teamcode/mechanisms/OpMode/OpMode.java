@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 
 @TeleOp(name = "OpMode")
-public class OpMode3 extends LinearOpMode {
+public class OpMode extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
 
@@ -45,7 +45,7 @@ public class OpMode3 extends LinearOpMode {
             }
 
             if (gamepad1.left_trigger >= 0.7){
-                robot.spinSecondOnly();
+                robot.spinFirstOnly();
             }
 
             if(gamepad1.right_trigger >= 0.7){
@@ -65,7 +65,7 @@ public class OpMode3 extends LinearOpMode {
             }
 
             if(gamepad1.x){
-                robot.shoot_x();
+                robot.stopShooter();
             }
 
             double x_dir = -gamepad1.left_stick_y * 1.3 * controller1Speed;
