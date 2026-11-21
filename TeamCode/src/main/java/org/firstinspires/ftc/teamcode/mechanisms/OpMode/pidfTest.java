@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.mechanisms.hardware.RobotHardware;
 
 
-@TeleOp(name = "OpMode")
+@TeleOp(name = "pidf test")
 public class pidfTest extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
@@ -24,10 +24,10 @@ public class pidfTest extends LinearOpMode {
 
     private double controller1Speed = 1;
 
-    double rpm = 1000.0;
-    private double kp = 1;
-    private double ki = 0;
-    private double kd = 0;
+    double rpm = 1050.0;
+    private double kp = 40;
+    private double ki = 0.355;
+    private double kd = 6.6;
 
     int selectedState = 0;
     double pidStep = 0.0;
@@ -113,23 +113,23 @@ public class pidfTest extends LinearOpMode {
             }
 
 
-            if (gamepad2.x) pidStep = 0.1;
-            else if (gamepad2.a) pidStep = 1.0;
-            else if (gamepad2.b) pidStep = 10.0;
-            else if (gamepad2.y) pidStep = 100.0;
+            if (gamepad2.x) pidStep = 0.01;
+            else if (gamepad2.a) pidStep = 0.1;
+            else if (gamepad2.b) pidStep = 1.0;
+            else if (gamepad2.y) pidStep = 10.0;
 
             robot.motorshoot.setPIDFCoefficients(
                     DcMotor.RunMode.RUN_USING_ENCODER,
                     new PIDFCoefficients(kp, ki, kd, 11.5)
             );
 
-            telemetry.addData("shooter velocity", robot.motorshoot != null ? robot.motorshoot.getVelocity() : "null");
-            telemetry.addData("shooter tpr", robot.motorshoot != null && robot.motorshoot.getMotorType() != null ? robot.motorshoot.getMotorType().getTicksPerRev() : "null");
             telemetry.addData("kp", kp);
             telemetry.addData("ki", ki);
             telemetry.addData("kd", kd);
             telemetry.addData("pidStep: ", pidStep);
             telemetry.addData("selectedState: ", selectedState);
+            telemetry.addData("shooter velocity", robot.motorshoot.getVelocity());
+            telemetry.addData("shooter ideal", rpm);
             telemetry.update();
 
             double x_dir = -gamepad1.left_stick_y * 1.3 * controller1Speed;

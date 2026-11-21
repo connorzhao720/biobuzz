@@ -58,9 +58,9 @@ public class turretpidfTest extends LinearOpMode {
                 robot.spinOutBothIntakes();
             }
 
-            if (gamepad1.right_bumper) {
-                robot.stopIntake();
-            }
+
+            robot.stopIntake();
+
             //set 0
             if (gamepad1.y) {
                 robot.shoot_y();
