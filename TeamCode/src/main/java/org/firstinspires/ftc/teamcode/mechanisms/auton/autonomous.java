@@ -34,7 +34,7 @@ public class autonomous extends LinearOpMode {
         if (opModeIsActive()) {
 
             // STEP 1: Drive forward 3 tiles
-            driveMotors(oneTile * 3, oneTile * 3, oneTile * 3, oneTile * 3, 0.35, true, robot.getCurrentYaw());
+            driveMotors(oneTile, oneTile, oneTile, oneTile, 0.15, true, robot.getCurrentYaw());
 
             // STEP 2: Turn 90 degrees
             double currentYaw = robot.imu
@@ -44,13 +44,13 @@ public class autonomous extends LinearOpMode {
             double targetYaw = currentYaw + 90;
 
             // Normalize target angle
-            while (targetYaw > 180) targetYaw -= 360;
-            while (targetYaw < -180) targetYaw += 360;
+            //while (targetYaw > 180) targetYaw -= 360;
+            //while (targetYaw < -180) targetYaw += 360;
 
-            turnToTargetYaw(targetYaw, 0.35, 3000);
+            //turnToTargetYaw(targetYaw, 0.35, 3000);
 
             // STEP 3: Drive backward 1 tile
-            driveMotors(-oneTile, -oneTile, -oneTile, -oneTile, 0.35, true, robot.getCurrentYaw());
+            //driveMotors(-oneTile, -oneTile, -oneTile, -oneTile, 0.35, true, robot.getCurrentYaw());
 
 //           shoot();
 //            double targetTicksPerSecond = ;

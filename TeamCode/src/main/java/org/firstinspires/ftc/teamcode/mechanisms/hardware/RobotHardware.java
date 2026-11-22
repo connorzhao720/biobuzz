@@ -51,9 +51,9 @@ public class RobotHardware {
     public YawPitchRollAngles orientation0;
     public AngularVelocity angularVelocity0;
     public double yaw0;
-    public double rpm = 1050;
-    public double servoOpen = 0;
-    public double servoClose = 1.0;
+    public double rpm = 700;
+    public double servoOpen = 0.15;
+    public double servoClose = 0.85;
 
     public RobotHardware() {}
     public void init(HardwareMap ahwMap)    {
@@ -88,8 +88,8 @@ public class RobotHardware {
         motorfl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorbr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorbl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorfr.setDirection(DcMotor.Direction.REVERSE);
         motorbr.setDirection(DcMotor.Direction.REVERSE);
+        motorfr.setDirection(DcMotor.Direction.REVERSE);
         motorintake.setDirection(DcMotor.Direction.REVERSE);
         motorsecondintake.setDirection(DcMotor.Direction.REVERSE);
 
@@ -169,7 +169,7 @@ public class RobotHardware {
 
         motorfl.setPower(fl);
         motorfr.setPower(fr);
-        motorbl.setPower(-bl);
+        motorbl.setPower(bl);
         motorbr.setPower(br);
     }
 

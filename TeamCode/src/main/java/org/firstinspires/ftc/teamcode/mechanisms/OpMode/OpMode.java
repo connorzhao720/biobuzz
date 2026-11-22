@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.function.Supplier;
 
 
-@TeleOp(name = "OpMode")
+@TeleOp(name = "OpMode3")
 public class OpMode extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
