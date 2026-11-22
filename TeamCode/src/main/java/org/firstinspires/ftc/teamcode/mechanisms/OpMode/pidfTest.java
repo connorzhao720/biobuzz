@@ -24,7 +24,7 @@ public class pidfTest extends LinearOpMode {
 
     private double controller1Speed = 1;
 
-    double rpm = 1050.0;
+    double rpm = 600.0;
     private double kp = 40;
     private double ki = 0.355;
     private double kd = 6.6;

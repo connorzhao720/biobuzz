@@ -68,9 +68,9 @@ public class OpMode extends LinearOpMode {
                 robot.stopShooter();
             }
 
-            double x_dir = -gamepad1.left_stick_y * 1.3 * controller1Speed;
-            double y_dir = gamepad1.left_stick_x * 1.3 * controller1Speed;
-            double turn = gamepad1.right_stick_x * 1.3 * controller1Speed;
+            double x_dir = gamepad1.left_stick_y * 1.3 * controller1Speed;
+            double y_dir = -gamepad1.left_stick_x * 1.3 * controller1Speed;
+            double turn = -gamepad1.right_stick_x * 1.3 * controller1Speed;
 
             double flPower = x_dir + y_dir + turn;
             double blPower = y_dir - x_dir - turn;//+turn
@@ -80,12 +80,13 @@ public class OpMode extends LinearOpMode {
 
             if (gamepad1.dpad_down) {
                 controller1Speed = 0.3;
-                robot.setDrivePower(-flPower, -frPower, -blPower, -brPower);
+                robot.setDrivePower(flPower, frPower, blPower, brPower);
             }
             else {
                 controller1Speed = 1;
-                robot.setDrivePower(-flPower, -frPower, -blPower, -brPower);
+                robot.setDrivePower(flPower, frPower, blPower, brPower);
             }
+
 
             idle();
 
