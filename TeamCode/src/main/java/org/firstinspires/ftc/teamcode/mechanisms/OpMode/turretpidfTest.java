@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.mechanisms.hardware.RobotHardware;
 
 
-@TeleOp(name = "OpMode")
+@TeleOp(name = "turret pidf test")
 public class turretpidfTest extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();

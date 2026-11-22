@@ -221,6 +221,14 @@ public class RobotHardware {
         servoblocker.setPosition(servoOpen);
     }
 
+    public void autoShoot(){
+        motorshoot.setVelocity(rpm);
+        while(motorshoot.getVelocity() > (rpm - 50)){
+            servoblocker.setPosition(servoOpen);
+            spinBothIntakes();
+        }
+    }
+
 
 //    public void autoShootShort(){
 //        if(motorshoot.getVelocity() > 1430){
