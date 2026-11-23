@@ -51,7 +51,7 @@ public class RobotHardware {
     public YawPitchRollAngles orientation0;
     public AngularVelocity angularVelocity0;
     public double yaw0;
-    public double rpm = 580;//x1.5 bc ratio
+    public double rpm = 570;//x1.5 bc ratio
     public double servoOpen = 0.15;
     public double servoClose = 0.7;
 
@@ -72,10 +72,10 @@ public class RobotHardware {
 
         // get shooter as DcMotorEx to expose velocity control
         motorshoot = hwMap.get(DcMotorEx.class, "shooter");
-        double kp=104.92;
-        double ki = 0.18;
-        double kd = 2.29;
-        double kf = 11.5;
+        double kp=200;
+        double ki = 0;
+        double kd = 0;
+        double kf = 14;
 
         motorshoot.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
@@ -93,6 +93,8 @@ public class RobotHardware {
         motorbl.setDirection(DcMotor.Direction.REVERSE);
         motorintake.setDirection(DcMotor.Direction.REVERSE);
         motorsecondintake.setDirection(DcMotor.Direction.REVERSE);
+
+        servoblocker.setPosition(servoClose);
 
 //        motorintake.setDirection(DcMotor.Direction.REVERSE);
 //        motorsweep.setDirection(DcMotor.Direction.REVERSE);
@@ -148,7 +150,10 @@ public class RobotHardware {
     }
 
     public double increaserpm(){
-        return (rpm + 100);
+        return (rpm + 20);
+    }
+    public double decreaserpm(){
+        return (rpm - 20);
     }
 
     public void setDrivePower(double fl, double fr, double bl, double br) {

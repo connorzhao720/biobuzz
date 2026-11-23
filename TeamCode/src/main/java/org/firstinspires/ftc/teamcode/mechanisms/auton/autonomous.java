@@ -22,7 +22,7 @@ public class autonomous extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap);
-        robot.setAutoDriveMotorMode();
+        //robot.setAutoDriveMotorMode();
 
         telemetry.addLine("Autonomous ready");
         telemetry.update();
@@ -33,15 +33,13 @@ public class autonomous extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+            robot.setDrivePower(-0.2, 0.2, 0.2, -0.2);
+
+            sleep(3000);
+            robot.setDrivePower(0,0, 0,0);
             // STEP 1: Drive forward 3 tiles
-            driveMotors(oneTile, oneTile, oneTile, oneTile, 0.15, true, robot.getCurrentYaw());
 
-            // STEP 2: Turn 90 degrees
-            double currentYaw = robot.imu
-                    .getRobotYawPitchRollAngles()
-                    .getYaw(AngleUnit.DEGREES);
 
-            double targetYaw = currentYaw + 90;
 
             // Normalize target angle
             //while (targetYaw > 180) targetYaw -= 360;
@@ -68,7 +66,7 @@ public class autonomous extends LinearOpMode {
 //            }
         }
 
-        stopDriveMotors();
+        //stopDriveMotors();
     }
 
     private void driveMotors(
@@ -166,10 +164,10 @@ public class autonomous extends LinearOpMode {
                 powerL = Math.max(0, Math.min(1.0, powerL));
                 powerR = Math.max(0, Math.min(1.0, powerR));
 
-                robot.motorfl.setPower(powerL);
-                robot.motorbl.setPower(powerL);
-                robot.motorfr.setPower(powerR);
-                robot.motorbr.setPower(powerR);
+                robot.motorfl.setPower(power);
+                robot.motorbl.setPower(power);
+                robot.motorfr.setPower(power);
+                robot.motorbr.setPower(power);
             }
 
             idle();
@@ -232,6 +230,7 @@ public class autonomous extends LinearOpMode {
 
         stopDriveMotors();
     }
+
 
 
     private void turnToTargetYaw(

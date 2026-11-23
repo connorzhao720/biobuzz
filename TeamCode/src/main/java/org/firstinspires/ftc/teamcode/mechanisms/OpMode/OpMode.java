@@ -88,11 +88,22 @@ public class OpMode extends LinearOpMode {
             }
 
 
+            if (gamepad2.y){
+                robot.increaserpm();
+                sleep(1000);
+            }
+            if (gamepad2.a){
+                robot.decreaserpm();
+                sleep(1000);
+
+            }
+
             idle();
 
             // --- TELEMETRY ---
 //            telemetry.addData("intakePower", robot.motorintake != null ? robot.motorintake.getPower() : "null");
             telemetry.addData("shooter velocity", robot.motorshoot != null ? robot.motorshoot.getVelocity() : "null");
+            telemetry.addData("rpm", robot.rpm);
             telemetry.addData("shooter tpr", robot.motorshoot != null && robot.motorshoot.getMotorType() != null ? robot.motorshoot.getMotorType().getTicksPerRev() : "null");
             telemetry.update();
 

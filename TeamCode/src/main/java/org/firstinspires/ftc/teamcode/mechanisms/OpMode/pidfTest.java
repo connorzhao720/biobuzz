@@ -24,10 +24,10 @@ public class pidfTest extends LinearOpMode {
 
     private double controller1Speed = 1;
 
-    double rpm = 600.0;
-    private double kp = 40;
-    private double ki = 0.355;
-    private double kd = 6.6;
+    double rpm = 580.0;
+    private double kp = 30;
+    private double ki = 0;
+    private double kd = 0;
 
     int selectedState = 0;
     double pidStep = 0.0;
@@ -120,7 +120,7 @@ public class pidfTest extends LinearOpMode {
 
             robot.motorshoot.setPIDFCoefficients(
                     DcMotor.RunMode.RUN_USING_ENCODER,
-                    new PIDFCoefficients(kp, ki, kd, 11.5)
+                    new PIDFCoefficients(kp, ki, kd, 14)
             );
 
             telemetry.addData("kp", kp);
